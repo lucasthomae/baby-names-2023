@@ -33,6 +33,39 @@ library(apstyle)
 
 ```{r}
 nationaldf %>%
+  filter(year %in% c(1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020)) %>%
+  group_by(year) %>%
+  summarise(unique_names = n())
+```
+
+```{r}
+nationaldf %>%
+  filter(sex == "M", year %in% c(1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020)) %>%
+  group_by(year) %>%
+  summarise(unique_names = n())
+```
+
+```{r}
+nationaldf %>%
+  filter(sex == "F", year %in% c(1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020)) %>%
+  group_by(year) %>%
+  summarise(unique_names = n())
+```
+
+```{r}
+nationaldf %>%
+  filter(year==2022, sex=="F") %>%
+  arrange(desc(babies))
+```
+
+```{r}
+nationaldf %>%
+  filter(year==2022, sex=="M") %>%
+  arrange(desc(babies))
+```
+
+```{r}
+nationaldf %>%
   filter(name=="Mia", sex=="F")
 ```
 
@@ -46,7 +79,6 @@ nationaldf %>%
   filter(name=="Kylian", sex=="M")
 ```
 
-
 ```{r}
 growthdf <-
 nationaldf %>%
@@ -58,6 +90,9 @@ nationaldf %>%
          ten_year_growth = (y2022-y2013)/y2013*100
          ) %>%
   select(name, sex, y2022, one_year_growth, five_year_growth, ten_year_growth)
+
+growthdf %>%
+  arrange(desc(five_year_growth))
 ```
 
 ```{r}
@@ -207,7 +242,7 @@ kobe
 ```{r}
 kobeplot <-
 ggplot(kobe, aes(x=year, y=babies)) +
-  geom_line(color = "#FDB927", size = 1.2) +
+  geom_line(color = "orchid3", size = 1.2) +
   scale_x_continuous(
     limits = c(1995, 2022),
     breaks = seq(1996, 2022, 4),
@@ -220,43 +255,40 @@ ggplot(kobe, aes(x=year, y=babies)) +
   ) +
   geom_point(data = kobe[kobe$year == 1996, ],
              shape = 21,
-             color = "#FDB927",
-             fill = "#552583",
+             fill = "gold",
+             color = "orchid3",
              size = 2,
              stroke = 1.2) +
   annotate("text",
            x = 1999,
-           y = 100,
+           y = 150,
            label = "Kobe Bryant is \n drafted into the NBA",
            color = "black",
-           size = 2.75,
-           fontface = "bold") +
+           size = 3.25) +
   geom_point(data = kobe[kobe$year == 2000, ],
              shape = 21,
-             color = "#FDB927",
-             fill = "#552583",
+             fill = "gold",
+             color = "orchid3",
              size = 2,
              stroke = 1.2) +
   annotate("text",
-           x = 1997.5,
-           y = 1485,
+           x = 1997.3,
+           y = 1450,
            label = "Kobe Bryant \n wins his first NBA \n Championship",
            color = "black",
-           size = 2.75,
-           fontface = "bold") +
+           size = 3.25) +
   geom_point(data = kobe[kobe$year == 2020, ],
              shape = 21,
-             color = "#FDB927",
-             fill = "#552583",
+             fill = "gold",
+             color = "orchid3",
              size = 2,
              stroke = 1.2) +
   annotate("text",
            x = 2017,
-           y = 1500,
+           y = 1450,
            label = "Kobe Bryant dies in \n a helicopter crash",
            color = "black",
-           size = 2.75,
-           fontface = "bold") +
+           size = 3.25) +
   labs(title = "History of the name Kobe in the U.S.",
        caption = "Source: Social Security Administration") +
   theme_ap(family = "") +
@@ -267,19 +299,11 @@ kobeplot
 ```
 
 
-```{r}
-nationaldf %>%
-  filter(sex == "M", year %in% c(1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020)) %>%
-  group_by(year) %>%
-  summarise(unique_names = n())
-```
 
-```{r}
-nationaldf %>%
-  filter(sex == "F", year %in% c(1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020)) %>%
-  group_by(year) %>%
-  summarise(unique_names = n())
-```
+
+
+
+
 
 
 <!-- This section is for a tests code block -->
