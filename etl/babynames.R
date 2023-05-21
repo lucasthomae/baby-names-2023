@@ -14,3 +14,6 @@ nationaldf <- map_df(natfilepaths,
                          mutate(year = as.numeric(str_sub(x, nchar(x[1])-7, nchar(x[1])-4)))
 })
 
+
+
+
