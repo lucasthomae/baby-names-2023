@@ -2,7 +2,10 @@
 title: "Baby Names Data Interview"
 date: "05/22/2023"
 output:
-  github_document:
+  html_document:
+    toc: true
+    toc_float: true
+    df_print: paged
 knit: (function(i, encoding) {apstyle::render(i, encoding)})
 ---
 <!-- Timestamp: leave this in to automatically track when a file is rendered -->
