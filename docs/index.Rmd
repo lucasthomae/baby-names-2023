@@ -12,7 +12,7 @@ output:
 *Rendered at `r format(Sys.time(), '%I:%M %p, %b. %d, %Y')`*
 
 <!-- Contact info: leave author/reporter/editor contact info here -->
-*Lucas Thomae (<ljthomae@mail.unc.edu>)*
+*Lucas Thomae (<ljthomae@email.unc.edu>)*
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
