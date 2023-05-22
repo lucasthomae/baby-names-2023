@@ -25,10 +25,12 @@ knitr::opts_knit$set(
   root.dir = rprojroot::find_rstudio_root_file()
   )
 ```
+
 ```{r initialize}
 # Load files, environment variables, libraries, etc. here
 library(tidyverse)
 library(apstyle)
+library(DT)
 
 natfilepaths <- list.files("data/source/names", full.names=T)
 
@@ -46,6 +48,23 @@ isis <-
   nationaldf %>%
   filter(name=="Isis", sex=="F")
 
+kobe <-
+  nationaldf %>%
+  filter(name=="Kobe", sex=="M")
+
+growthdf <-
+nationaldf %>%
+  filter(year %in% c(2022, 2021, 2018, 2013)) %>%
+  pivot_wider(names_from = year, values_from = babies) %>%
+  rename('babies_2022' = '2022', 'y2021' = '2021', 'y2018' = '2018', 'y2013' = '2013') %>%
+  mutate(one_year_growth = (babies_2022-y2021)/y2021,
+         five_year_growth = (babies_2022-y2018)/y2018,
+         ten_year_growth = (babies_2022-y2013)/y2013
+         ) %>%
+  filter(babies_2022 >= 100) %>%
+  select(name, sex, babies_2022, one_year_growth, five_year_growth, ten_year_growth)
+  
+
 ```
 
 ## Feature Story
@@ -56,11 +75,13 @@ Anytime the Cascianos call for their daughter inside their home, a cacophony of 
 
 “I hate the Alexa,” recent UNC Chapel Hill graduate Alexa Casciano said. “Every time my family talks to me all the Alexas in the house will go off.”
 
-Casciano is not the only Alexa to feel this way. Since Amazon introduced its virtual assistant technology in November 2014, fewer and fewer Americans are naming their newborn girls Alexa.
+Casciano is not the only Alexa to feel this way. In 2021, the Washington Post published an op-ed titled [Amazon, can we have our name back?](https://www.washingtonpost.com/technology/interactive/2021/people-named-alexa-name-change-amazon/) 
+
+Since Amazon introduced its virtual assistant technology in November 2014, fewer and fewer Americans are naming their newborn girls Alexa.
 
 ```{r}
 ggplot(alexa, aes(x=year, y=babies)) +
-  geom_line() +
+  geom_line(size=1.1) +
   scale_x_continuous(
     limits = c(1972, 2022),
     breaks = seq(1972, 2022, 10),
@@ -110,8 +131,32 @@ In fact, Alexa is the most rapidly declining girls name of the last ten years ac
 American naming culture is often very reactive to current events and trending topics. Similar drop offs were seen with the names Katrina in 2006 and Isis in 2015.
 
 ```{r}
+
+```
+
+
+The fastest growing baby names can also glean insight into what Americans care about. Dutton and Kayce, two names taken from the popular Paramount series Yellowstone, were the first and third fastest growing boys names of the last five years.
+
+Amiri was the fastest growing girls name and also the second fastest growing boys name, which likely is connected to ascendant fashion designer Mike Amiri. And Ermias, the fourth fastest growing boys name, was the real name of hip hop artist Nipsey Hussle, who was murdered in 2019.
+
+The one-year data seems to be more random simply because of the small sample size, but at least one rapidly growing name from 2022 seems to have a clear explanation. Debanhi was the fastest growing name by a long shot last year, increasing by a rate of over 1,100 percent.
+
+That growth is almost certainly related to Debanhi Escobar, an 18-year-old Mexican law student who was murdered in April 2022. Escobar’s death roused demonstrators across Mexico, who marched in remembrance of the thousands of women who have gone missing in the country.
+
+According to names.org, the name Debanhi is of Mexican origin and means “Eternal God bless our daughter.”
+
+## Data Table
+
+```{r}
+DT::datatable(growthdf) %>%
+  DT::formatPercentage(columns = c("one_year_growth", "five_year_growth", "ten_year_growth"), digits = 2)
+```
+
+## Extra Data Viz
+
+```{r}
 ggplot(isis, aes(x=year, y=babies)) +
-  geom_line() +
+  geom_line(size=1.1) +
   scale_x_continuous(
     limits = c(1972, 2022),
     breaks = seq(1972, 2022, 10),
@@ -169,23 +214,74 @@ ggplot(isis, aes(x=year, y=babies)) +
 ```
 
 
-The fastest growing baby names can also glean insight into what Americans care about. Dutton and Kayce, two names taken from the popular Paramount series Yellowstone, were the first and third fastest growing boys names of the last five years.
+```{r}
+  ggplot(kobe, aes(x=year, y=babies)) +
+  geom_line(color = "orchid3", size = 1.2) +
+  scale_x_continuous(
+    limits = c(1995, 2022),
+    breaks = seq(1996, 2022, 4),
+    name = NULL
+  ) +
+  scale_y_continuous(
+    limits = c(0, 1600),
+    breaks = seq(0, 1600, 400),
+    name = "Newborn boys named Kobe"
+  ) +
+  geom_point(data = kobe[kobe$year == 1996, ],
+             shape = 21,
+             fill = "gold",
+             color = "orchid3",
+             size = 2,
+             stroke = 1.2) +
+  annotate("text",
+           x = 1999,
+           y = 150,
+           label = "Kobe Bryant is \n drafted into the NBA",
+           color = "black",
+           size = 3.25) +
+  geom_point(data = kobe[kobe$year == 2000, ],
+             shape = 21,
+             fill = "gold",
+             color = "orchid3",
+             size = 2,
+             stroke = 1.2) +
+  annotate("text",
+           x = 1997.3,
+           y = 1450,
+           label = "Kobe Bryant \n wins his first NBA \n Championship",
+           color = "black",
+           size = 3.25) +
+  geom_point(data = kobe[kobe$year == 2020, ],
+             shape = 21,
+             fill = "gold",
+             color = "orchid3",
+             size = 2,
+             stroke = 1.2) +
+  annotate("text",
+           x = 2017,
+           y = 1450,
+           label = "Kobe Bryant dies in \n a helicopter crash",
+           color = "black",
+           size = 3.25) +
+  labs(title = "History of the name Kobe in the U.S.",
+       caption = "Source: Social Security Administration") +
+  theme_ap(family = "") +
+  theme(panel.grid.major.x = element_blank(),
+        axis.ticks = element_blank())
+```
 
-Amiri was the fastest growing girls name and also the second fastest growing boys name, which likely is connected to ascendant fashion designer Mike Amiri. And Ermias, the fourth fastest growing boys name, was the real name of hip hop artist Nipsey Hussle, who was murdered in 2019.
-
-The one-year data seems to be more random simply because of the small sample size, but at least one rapidly growing name from 2022 seems to have a clear explanation. Debanhi was the fastest growing name by a long shot last year, increasing by a rate of over 1,100 percent.
-
-That growth is almost certainly related to Debanhi Escobar, an 18-year-old Mexican law student who was murdered in April 2022. Escobar’s death roused demonstrators across Mexico, who marched in remembrance of the thousands of women who have gone missing in the country.
-
-According to names.org, the name Debanhi is of Mexican origin and means “Eternal God bless our daughter.”
 
 ## References
 
 <!-- This section is for including references to related material -->
 
-- CREDO National Charter School Study 2013: http://credo.stanford.edu/documents/NCSS%202013%20Final%20Draft.pdf
+- Social Security Administration: Popular Baby Names: https://www.ssa.gov/oact/babynames/index.html
 
-- NBER Working Paper No. 23947: The Labor Market Effects of Offshoring by U.S. Multinational Firms: Evidence from Changes in Global Tax Policies: http://www.nber.org/papers/w23947
+- The Atlantic: Amazon Killed the Name Alexa: https://www.theatlantic.com/family/archive/2021/08/amazon-alexa-popular-name/619794/
+
+- Quartz: A baby name expert says Isis is one of the fastest-falling names of all time: https://qz.com/868244/the-baby-name-isis-is-one-of-the-fastest-falling-names-of-all-time
+
+- CBS News: Law student whose body was found in motel water tank was suffocated, Mexican authorities say: https://www.cbsnews.com/news/debanhi-escobar-law-student-body-motel-water-tank-suffocated-mexico-third-autopsy/
 
 <!-- This section is for a tests code block -->
 
