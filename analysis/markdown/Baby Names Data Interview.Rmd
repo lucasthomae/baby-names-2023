@@ -213,6 +213,14 @@ nationaldf %>%
 # Isis was the 3,107th most popular girls name in 2017.
 ```
 
+```{r}
+# Okay, just one more.
+
+nationaldf %>%
+  filter(sex=="F", name=="Katrina")
+```
+
+
 <!-- This section is for a tests code block -->
 
 ```{r tests}

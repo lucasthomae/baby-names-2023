@@ -1,5 +1,5 @@
 ---
-title: "Please Work 2?"
+title: "2022 Baby Names Data Reveals Current American Trends"
 date: "05/22/2022"
 output:
   html_document:
@@ -12,7 +12,7 @@ output:
 *Rendered at `r format(Sys.time(), '%I:%M %p, %b. %d, %Y')`*
 
 <!-- Contact info: leave author/reporter/editor contact info here -->
-*Firstname Lastname (<email@domain.com>)*
+*Lucas Thomae (<ljthomae@mail.unc.edu>)*
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
@@ -29,11 +29,155 @@ knitr::opts_knit$set(
 # Load files, environment variables, libraries, etc. here
 library(tidyverse)
 library(apstyle)
+
+natfilepaths <- list.files("data/source/names", full.names=T)
+
+nationaldf <- map_df(natfilepaths,
+                     function(x) {
+                       read_csv(x, col_names = c("name", "sex", "babies")) %>%
+                         mutate(year = as.numeric(str_sub(x, nchar(x[1])-7, nchar(x[1])-4)))
+})
+
+alexa <-
+  nationaldf %>%
+  filter(name=="Alexa", sex=="F")
+
+isis <-
+  nationaldf %>%
+  filter(name=="Isis", sex=="F")
+
 ```
 
-## Overview
+## Feature Story
 
 <!-- This section is for presenting the key takeaways and wire-ready content -->
+
+Anytime the Cascianos call for their daughter inside their home, a cacophony of robotic voices is set off. That’s been the norm ever since the Somer, N.Y. family bought an Amazon Echo smart speaker years ago.
+
+“I hate the Alexa,” recent UNC Chapel Hill graduate Alexa Casciano said. “Every time my family talks to me all the Alexas in the house will go off.”
+
+Casciano is not the only Alexa to feel this way. Since Amazon introduced its virtual assistant technology in November 2014, fewer and fewer Americans are naming their newborn girls Alexa.
+
+```{r}
+ggplot(alexa, aes(x=year, y=babies)) +
+  geom_line() +
+  scale_x_continuous(
+    limits = c(1972, 2022),
+    breaks = seq(1972, 2022, 10),
+    name = NULL
+  ) +
+  scale_y_continuous(
+    limits = c(0, 6500),
+    breaks = seq(0, 6500, 1500),
+    name = "Newborn girls named Alexa"
+  ) +
+  geom_point(data = alexa[alexa$year == 1985, ],
+             shape = 21,
+             color = "black",
+             fill = "black",
+             size = 3) +
+  annotate("text",
+           x = 1981.3,
+           y = 755,
+           label = "Billy Joel and \n Christie Brinklie name \n daughter Alexa",
+           color = "black",
+           size = 2.75,
+           fontface = "bold") +
+  geom_point(data = alexa[alexa$year == 2014, ],
+             shape = 21,
+             color = "black",
+             fill = "lightblue",
+             size = 2.5,
+             stroke = 1.2) +
+  annotate("text",
+           x = 2013,
+           y = 3500,
+           label = "Amazon releases \n Echo and Alexa \n voice service",
+           color = "black",
+           size = 2.75,
+           fontface = "bold") +
+  labs(title = "History of the name Alexa in the U.S.",
+       subtitle = "The baby name spiked shortly after the Amazon product was launched then sharply declined.",
+       caption = "Source: Social Security Administration") +
+  theme_ap(family = "") +
+  theme(panel.grid.major.x = element_blank(),
+        axis.ticks = element_blank())
+```
+
+
+In fact, Alexa is the most rapidly declining girls name of the last ten years according to an analysis using the latest data from the Social Security Administration. Alexis and Alexia have also seen sharp decreases in that timeframe.
+
+American naming culture is often very reactive to current events and trending topics. Similar drop offs were seen with the names Katrina in 2006 and Isis in 2015.
+
+```{r}
+ggplot(isis, aes(x=year, y=babies)) +
+  geom_line() +
+  scale_x_continuous(
+    limits = c(1972, 2022),
+    breaks = seq(1972, 2022, 10),
+    name = NULL
+  ) +
+  scale_y_continuous(
+    limits = c(0, 600),
+    breaks = seq(0, 600, 200),
+    name = "Newborn girls named Isis"
+  ) +
+  geom_point(data = isis[isis$year == 1974, ],
+             shape = 21,
+             color = "black",
+             fill = "black",
+             size = 3) +
+  annotate("text",
+           x = 1978.75,
+           y = 0,
+           label = "'Isis' rock band \n releases debut album",
+           color = "black",
+           size = 2.7,
+           fontface = "bold") +
+  geom_point(data = isis[isis$year == 1975, ],
+             shape = 21,
+             color = "black",
+             fill = "black",
+             size = 3) +
+  annotate("text",
+           x = 1972.7,
+           y = 115,
+           label = "'Isis' TV \n show debuts \n on CBS",
+           color = "black",
+           size = 2.7,
+           fontface = "bold") +
+  geom_rect(xmin = 2014,
+            xmax = 2019,
+            ymin = -Inf,
+            ymax = 515,
+            fill = "pink",
+            alpha = 0.01) +
+  annotate("text",
+           x = 2016.5,
+           y = 560,
+           label = "The reign of \n the Islamic State \n (ISIS) caliphate",
+           color = "black",
+           size = 2.7,
+           fontface = "bold") +
+  labs(
+    title = "History of the name Isis in the U.S.",
+    caption = "Source: Social Security Administration"
+  ) +
+  theme_ap(family = "") +
+  theme(panel.grid.major.x = element_blank(),
+        axis.ticks = element_blank())
+```
+
+
+The fastest growing baby names can also glean insight into what Americans care about. Dutton and Kayce, two names taken from the popular Paramount series Yellowstone, were the first and third fastest growing boys names of the last five years.
+
+Amiri was the fastest growing girls name and also the second fastest growing boys name, which likely is connected to ascendant fashion designer Mike Amiri. And Ermias, the fourth fastest growing boys name, was the real name of hip hop artist Nipsey Hussle, who was murdered in 2019.
+
+The one-year data seems to be more random simply because of the small sample size, but at least one rapidly growing name from 2022 seems to have a clear explanation. Debanhi was the fastest growing name by a long shot last year, increasing by a rate of over 1,100 percent.
+
+That growth is almost certainly related to Debanhi Escobar, an 18-year-old Mexican law student who was murdered in April 2022. Escobar’s death roused demonstrators across Mexico, who marched in remembrance of the thousands of women who have gone missing in the country.
+
+According to names.org, the name Debanhi is of Mexican origin and means “Eternal God bless our daughter.”
 
 ## References
 
