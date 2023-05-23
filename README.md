@@ -1,6 +1,6 @@
 # Babynames 2023
 
-Exploring the social s
+Project for MEJO 390: Advanced Data Journalism
 
 *Created by Lucas Thomae (<ljthomae@email.unc.edu>)*
 
@@ -8,21 +8,11 @@ Exploring the social s
 
 ## Project goal
 
-*TK: Briefly describe this project*
+This project uses the latest baby name data from the Social Security Administration to explore what affects the popularity of certain names over time.
 
-## Project notes
+## Data sources
 
-### Staff involved
-
-*TK: List people & contact info for people involved in the project*
-
-[Responsibility matrix](url-to-responsibility matrix)
-
-[HIRUFF Q&A](url-to-hiruff)
-
-### Data sources
-
-*TK: List access info & contact info for data sources used in the project*
+All of the data used in this project can be downloaded at https://www.ssa.gov/oact/babynames/limits.html
 
 ## Technical
 
