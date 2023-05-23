@@ -130,11 +130,6 @@ In fact, Alexa is the most rapidly declining girls name of the last ten years ac
 
 American naming culture is often very reactive to current events and trending topics. Similar drop offs were seen with the names Katrina in 2006 and Isis in 2015.
 
-```{r}
-
-```
-
-
 The fastest growing baby names can also glean insight into what Americans care about. Dutton and Kayce, two names taken from the popular Paramount series Yellowstone, were the first and third fastest growing boys names of the last five years.
 
 Amiri was the fastest growing girls name and also the second fastest growing boys name, which likely is connected to ascendant fashion designer Mike Amiri. And Ermias, the fourth fastest growing boys name, was the real name of hip hop artist Nipsey Hussle, who was murdered in 2019.
